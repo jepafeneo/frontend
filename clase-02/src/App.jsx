@@ -1,6 +1,8 @@
 import "./App.css";
+import CategoryList from "./components/CategoryList";
 import Footer from "./components/Footer";
 import ProductList from "./components/ProductList";
+import Subtitle from "./components/Subtitle";
 import Title from "./components/Title";
 
 function App() {
@@ -23,13 +25,9 @@ function App() {
 
       <ProductList products={products} />
 
-      <h2>Categorías</h2>
+      <Subtitle title="Categorías" />
 
-      <ul>
-        {categories.map((category) => (
-          <li key={category.id}>{category.name}</li>
-        ))}
-      </ul>
+      <CategoryList categories={categories} />
 
       <Footer company="Una empresa" />
     </>

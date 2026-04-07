@@ -4,10 +4,7 @@ function ProductList({ products }) {
   return (
     <ul>
       {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-        />
+        <ProductCard key={product.id} product={product} />
       ))}
     </ul>
   );
