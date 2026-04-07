@@ -2,11 +2,11 @@ import ProductCard from "./ProductCard";
 
 function ProductList({ products }) {
   return (
-    <ul>
+    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
-    </ul>
+    </div>
   );
 }
 

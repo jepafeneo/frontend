@@ -27,6 +27,8 @@ function App() {
 
       <Subtitle title="Categorías" />
 
+      <h3 className="ticks">Algo</h3>
+
       <CategoryList categories={categories} />
 
       <Footer company="Una empresa" />
