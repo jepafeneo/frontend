@@ -11,11 +11,25 @@ function App() {
     { id: 4, name: "Monitor", price: 300, category: "Monitors" },
   ];
 
+  const categories = [
+    { id: 1, name: "Tecnología" },
+    { id: 2, name: "Audio" },
+    { id: 3, name: "Accesorios" },
+  ];
+
   return (
     <>
       <Title title="Novedades" />
 
       <ProductList products={products} />
+
+      <h2>Categorías</h2>
+
+      <ul>
+        {categories.map((category) => (
+          <li key={category.id}>{category.name}</li>
+        ))}
+      </ul>
 
       <Footer company="Una empresa" />
     </>
