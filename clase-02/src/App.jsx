@@ -1,18 +1,19 @@
 import "./App.css";
+import ProductList from "./components/ProductList";
 
 function App() {
-  const name = "Juan";
-  const products = ["Mouse", "Laptop"];
+  const products = [
+    { id: 1, name: "Laptop" },
+    { id: 2, name: "Mouse" },
+    { id: 3, name: "Keyword" },
+    { id: 4, name: "Monitor" },
+  ];
 
   return (
     <>
-      <h1>Hola {name}</h1>
-      
-      <ul>
-        {products.map((item) => (
-          <li>{item}</li>
-        ))}
-      </ul>
+      <h1>Listado de productos</h1>
+
+      <ProductList products={products} />
     </>
   );
 }
