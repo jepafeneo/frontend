@@ -1,6 +1,6 @@
 import "./App.css";
-import SerieCard from "./components/SerieCard";
-import GameCard from "./components/GameCard";
+import SerieList from "./components/SerieList";
+import GameList from "./components/GameList";
 
 function App() {
   // const series = [
@@ -48,21 +48,13 @@ function App() {
       <section>
         <h2>Series</h2>
 
-        <div>
-          {series.map((serie) => (
-            <SerieCard key={serie.id} serie={serie} />
-          ))}
-        </div>
+        <SerieList series={series} />
       </section>
 
       <section>
         <h2>Juegos</h2>
 
-        <div>
-          {games.map((game) => (
-            <GameCard key={game.id} game={game} />
-          ))}
-        </div>
+        <GameList games={games} />
       </section>
     </>
   );
