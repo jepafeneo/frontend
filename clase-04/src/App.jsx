@@ -32,6 +32,8 @@ function App() {
     { id: 2, title: "Élite", year: 2018 },
     { id: 3, title: "La que se avecina", year: 2007 },
     { id: 4, title: "Vis a vis", year: 2015 },
+    { id: 5, title: "Stranger Things", year: 2016 },
+    { id: 6, title: "El caballero de los 7 reinos", year: 2026 },
   ];
 
   const games = [
