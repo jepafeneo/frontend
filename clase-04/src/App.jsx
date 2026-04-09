@@ -1,4 +1,5 @@
 import "./App.css";
+import SerieCard from "./components/SerieCard";
 
 function App() {
   // const series = [
@@ -37,8 +38,6 @@ function App() {
     { id: 2, title: "The Last of Us", platform: "PlayStation" },
     { id: 3, title: "Call of Duty", platform: "Xbox" },
     { id: 4, title: "League of Legends", platform: "PC" },
-    { id: 5, title: "Starcraft", platform: "PC" },
-    { id: 6, title: "Mir4", platform: "PC" },
   ];
 
   return (
@@ -47,54 +46,22 @@ function App() {
 
       <h2>Series</h2>
 
-      <ul>
+      <section>
         {series.map((serie) => (
-          <li key={serie.id}>
-            {/* {"Serie: " + serie.title + ", " + "año: " + serie.year} */}
-            {`Serie: ${serie.title}, año: ${serie.year}`}
-          </li>
+          <SerieCard key={serie.id} serie={serie} />
         ))}
-      </ul>
+      </section>
 
-      {/* <ul>
+      <h2>Juegos</h2>
+
+      <section>
         {games.map((game) => (
-          <li key={games.id}>
-            {`Serie: ${game.title}, plataforma: ${game.platform}`}
-          </li>
+          <article key={game.id}>
+            <h3>{game.title}</h3>
+            <p>Plataforma: {game.platform}</p>
+          </article>
         ))}
-      </ul> */}
-
-      {/* <ul>
-        {games.map((juego) => (
-          <li
-            key={juego.id}
-          >{`Juego: ${juego.title}, plataforma: ${juego.platform}`}</li>
-        ))}
-      </ul> */}
-
-      {/* <ul>
-        {games.map((game) => (
-          <li key={game.id}>
-            {game.title} - {game.platform}
-          </li>
-        ))}
-      </ul> */}
-
-      {/* <ul>
-        {games.map((game) => (
-          <li key={`game-${game.id}`}>
-            {`Serie: ${game.title}, plataforma: ${game.platform}`}
-          </li>
-        ))}
-      </ul> */}
-
-      {/* <ul>
-        {games.map((game) => (
-          <li key={game.id}>
-            {game.title} {game.platform}
-          </li>
-        ))}
-      </ul> */}
+      </section>
     </>
   );
 }
