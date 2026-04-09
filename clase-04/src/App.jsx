@@ -1,5 +1,6 @@
 import "./App.css";
 import SerieCard from "./components/SerieCard";
+import GameCard from "./components/GameCard";
 
 function App() {
   // const series = [
@@ -44,23 +45,24 @@ function App() {
     <>
       <h1>Welcome to React</h1>
 
-      <h2>Series</h2>
-
       <section>
-        {series.map((serie) => (
-          <SerieCard key={serie.id} serie={serie} />
-        ))}
+        <h2>Series</h2>
+
+        <div>
+          {series.map((serie) => (
+            <SerieCard key={serie.id} serie={serie} />
+          ))}
+        </div>
       </section>
 
-      <h2>Juegos</h2>
-
       <section>
-        {games.map((game) => (
-          <article key={game.id}>
-            <h3>{game.title}</h3>
-            <p>Plataforma: {game.platform}</p>
-          </article>
-        ))}
+        <h2>Juegos</h2>
+
+        <div>
+          {games.map((game) => (
+            <GameCard key={game.id} game={game} />
+          ))}
+        </div>
       </section>
     </>
   );
