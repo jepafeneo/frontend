@@ -32,8 +32,11 @@ function App() {
     { id: 3, titulo: "Pulp Fiction", director: "Quentin Tarantino", año: 1994 },
   ];
 
+  // const [message, setMessage] = useState("");
+
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  // const [counterProducts, setCounterProducts] = useState(0);
 
   const [juegos, setJuegos] = useState([]);
   const [loadingJuegos, setLoadingJuegos] = useState(true);
@@ -56,11 +59,31 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log("useEffect [products]", products);
-    if (products.length > 0) {
-      console.log("Ya tenemos productos");
-    }
+    console.log("Estado de [products]", products);
+    document.title = `Productos: ${products.length}`;
   }, [products]);
+
+  // useEffect(() => {
+  //   console.log("useEffect [products]", products);
+  //   if (products.length > 0) {
+  //     console.log("Ya tenemos productos");
+  //   }
+  //   setCounterProducts(products.length);
+
+  //   // if (!loadingProducts) {
+  //   //   if (products.length == 0) {
+  //   //     setMessage("No hay productos");
+  //   //   } else {
+  //   //     setMessage(`Hay ${products.length} productos`);
+  //   //   }
+  //   // }
+
+  //   if (!loadingProducts && products.length == 0) {
+  //     setMessage("No hay productos");
+  //   } else if (!loadingProducts && products.length > 0) {
+  //     setMessage(`Hay ${products.length} productos`);
+  //   }
+  // }, [products]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -76,6 +99,16 @@ function App() {
     }, 2000);
   }, []);
 
+  const addProduct = () => {
+    const newProduct = { id: Date.now(), name: "Producto 4" };
+    console.log(newProduct);
+
+    setProducts([...products, newProduct]);
+
+    // products.push(newProduct);
+    console.log(products);
+  };
+
   return (
     <>
       <h1>Clase 05</h1>
@@ -85,19 +118,29 @@ function App() {
 
         {loadingProducts && <p>Cargando productos...</p>}
 
+        {!loadingProducts && products.length == 0 && <p>No hay productos</p>}
+        {/* {message && <p>{message}...</p>} */}
+
         <button onClick={() => setProducts([])}>Vaciar productos</button>
+
+        <button onClick={addProduct}>Agregar Producto</button>
 
         {products.map((product) => (
           <p key={`product-${product.id}`}>{product.name}</p>
         ))}
 
-        <p>Total: {products.length}</p>
+        {!loadingProducts && products.length > 0 && (
+          <p>Total: Hay {products.length} productos</p>
+        )}
+        {/* <p>Total: {counterProducts}</p> */}
       </section>
 
       <section>
         <h2>Juegos</h2>
 
         {loadingJuegos && <p>Cargando juegos...</p>}
+
+        {!loadingJuegos && juegos.length == 0 && <p>No hay juegos</p>}
 
         <button
           onClick={() => {
@@ -111,7 +154,9 @@ function App() {
           <p key={`juegos-${juego.id}`}>{juego.name}</p>
         ))}
 
-        <p>Total: {juegos.length}</p>
+        {!loadingJuegos && juegos.length > 0 && (
+          <p>Total: Hay {juegos.length} juegos.</p>
+        )}
       </section>
 
       <section>
@@ -120,6 +165,10 @@ function App() {
         {loadingPeliculas && <p>Cargando películas...</p>}
 
         <button onClick={() => setPeliculas([])}>Vaciar Peliculas</button>
+
+        <button onClick={() => setPeliculas(fakePeliculas)}>
+          Agregar Peliculas
+        </button>
 
         {peliculas.map((pelicula) => (
           <div key={pelicula.id}>
