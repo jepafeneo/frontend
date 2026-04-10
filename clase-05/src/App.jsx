@@ -33,8 +33,14 @@ function App() {
   ];
 
   const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
   const [juegos, setJuegos] = useState([]);
+  const [loadingJuegos, setLoadingJuegos] = useState(true);
+
   const [peliculas, setPeliculas] = useState([]);
+  const [loadingPeliculas, setLoadingPeliculas] = useState(true);
+
   // const [coches, setCoches] = useState([]);
 
   useEffect(() => {
@@ -42,21 +48,32 @@ function App() {
   }, []);
 
   useEffect(() => {
+    console.log("userEffect []", products);
     setTimeout(() => {
       setProducts(fakeProducts);
-    }, 2000);
+      setLoadingProducts(false);
+    }, 3000);
   }, []);
+
+  useEffect(() => {
+    console.log("useEffect [products]", products);
+    if (products.length > 0) {
+      console.log("Ya tenemos productos");
+    }
+  }, [products]);
 
   useEffect(() => {
     setTimeout(() => {
       setJuegos(fakeJuegos);
-    }, 3000);
+      setLoadingJuegos(false);
+    }, 5000);
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
       setPeliculas(fakePeliculas);
-    }, 1000);
+      setLoadingPeliculas(false);
+    }, 2000);
   }, []);
 
   return (
@@ -65,19 +82,53 @@ function App() {
 
       <section>
         <h2>Productos</h2>
-        <p>Total: {products.length}</p>
+
+        {loadingProducts && <p>Cargando productos...</p>}
+
+        <button onClick={() => setProducts([])}>Vaciar productos</button>
+
         {products.map((product) => (
           <p key={`product-${product.id}`}>{product.name}</p>
         ))}
+
+        <p>Total: {products.length}</p>
       </section>
 
       <section>
         <h2>Juegos</h2>
+
+        {loadingJuegos && <p>Cargando juegos...</p>}
+
+        <button
+          onClick={() => {
+            setJuegos([]);
+          }}
+        >
+          Vaciar juegos
+        </button>
+
+        {juegos.map((juego) => (
+          <p key={`juegos-${juego.id}`}>{juego.name}</p>
+        ))}
+
         <p>Total: {juegos.length}</p>
       </section>
 
       <section>
         <h2>Películas</h2>
+
+        {loadingPeliculas && <p>Cargando películas...</p>}
+
+        <button onClick={() => setPeliculas([])}>Vaciar Peliculas</button>
+
+        {peliculas.map((pelicula) => (
+          <div key={pelicula.id}>
+            <h3>{pelicula.titulo}</h3>
+            <p>Director: {pelicula.director}</p>
+            <p>Año: {pelicula.año}</p>
+          </div>
+        ))}
+
         <p>Total: {peliculas.length}</p>
       </section>
     </>
