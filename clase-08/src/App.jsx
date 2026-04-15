@@ -45,11 +45,7 @@ function App() {
       <>
         <h2>Detalle de producto</h2>
 
-        <h3>{selectedProduct.name}</h3>
-        <p>$ {selectedProduct.price}</p>
-        <p>Stock: {selectedProduct.stock}</p>
-
-        <button onClick={() => setSelectedProduct(null)}>Volver</button>
+        <ProductDetail product={selectedProduct} onBack={setSelectedProduct} />
       </>
     );
   }
