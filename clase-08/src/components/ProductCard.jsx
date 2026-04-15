@@ -1,12 +1,11 @@
 import "./ProductCard.css";
 
-function ProductCard({ name, price, stock }) {
-
+function ProductCard({ product, onSelectProduct }) {
   return (
-    <article className="product-card">
-      <h3>{name}</h3>
-      <p>$ {price}</p>
-      <p>Stock: {stock}</p>
+    <article className="product-card" onClick={() => onSelectProduct(product)}>
+      <h3>{product.name}</h3>
+      <p>$ {product.price}</p>
+      <p>Stock: {product.stock}</p>
     </article>
   );
 }

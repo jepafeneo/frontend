@@ -7,8 +7,10 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const loadProducts = () => {
-    fetch("http://localhost:3001/products")
+    fetch("http://localhost:3000/products")
       .then((res) => {
         if (!res.ok) throw new Error("Error al obtener lo productos");
         return res.json();
@@ -41,6 +43,8 @@ function App() {
     <>
       <h1>Clase 08</h1>
 
+      <button onClick={loadProducts}>Recargar productos</button>
+
       {/* {loading && <p>Cargando productos...</p>} */}
       {/* {loading ? <p>Cargando productos...</p> : null} */}
 
@@ -53,9 +57,8 @@ function App() {
           {products.map((product) => (
             <ProductCard
               key={product._id}
-              name={product.name}
-              stock={product.stock}
-              price={product.price}
+              product={product}
+              onSelectProduct={setSelectedProduct}
             />
           ))}
         </div>
