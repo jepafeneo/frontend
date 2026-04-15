@@ -23,7 +23,7 @@ function App() {
 
   return (
     <>
-      <h1>Clase 07</h1>
+      <h1>Clase 08</h1>
 
       <section>
         <h2>Products</h2>
