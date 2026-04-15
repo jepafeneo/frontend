@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import ProductCard from "./components/ProductCard";
+import ProductDetail from "./components/ProductDetail";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -37,6 +38,20 @@ function App() {
   if (error) {
     // return <p style={{ color: "red" }}>{error}</p>;
     return <p className="error">{error}</p>;
+  }
+
+  if (selectedProduct) {
+    return (
+      <>
+        <h2>Detalle de producto</h2>
+
+        <h3>{selectedProduct.name}</h3>
+        <p>$ {selectedProduct.price}</p>
+        <p>Stock: {selectedProduct.stock}</p>
+
+        <button onClick={() => setSelectedProduct(null)}>Volver</button>
+      </>
+    );
   }
 
   return (

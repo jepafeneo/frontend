@@ -5,7 +5,6 @@ function ProductCard({ product, onSelectProduct }) {
     <article className="product-card" onClick={() => onSelectProduct(product)}>
       <h3>{product.name}</h3>
       <p>$ {product.price}</p>
-      <p>Stock: {product.stock}</p>
     </article>
   );
 }
