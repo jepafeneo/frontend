@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import ProductCard from "./components/ProductCard";
+import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
 
 function App() {
@@ -50,27 +50,17 @@ function App() {
   }
 
   return (
-    <>
-      <h1>Clase 08</h1>
-
-      <button onClick={loadProducts}>Recargar productos</button>
+    <main className="container">
+      <h1>Clase 09</h1>
 
       <section>
         <h2>Products</h2>
 
-        <div className="product-list">
-          {products.map((product) => (
-            <ProductCard
-              key={product._id}
-              product={product}
-              onSelectProduct={setSelectedProduct}
-            />
-          ))}
-        </div>
+        <ProductList products={products} onSelectProduct={setSelectedProduct} />
 
         <p>Cantidad: {products.length}</p>
       </section>
-    </>
+    </main>
   );
 }
 
