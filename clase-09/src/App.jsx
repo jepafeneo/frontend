@@ -4,6 +4,7 @@ import "./App.css";
 import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
 import NotFound from "./components/NotFound";
+import Home from "./components/Home";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -32,21 +33,15 @@ function App() {
   }, []);
 
   if (loading) {
-    return <h1>Cargando productos...</h1>;
+    return <p className="message">Cargando productos...</p>;
   }
 
   if (error) {
     return <p className="error">{error}</p>;
   }
 
-  // if (selectedProduct) {
-  //   return (
-  //     <>
-  //       <h2>Detalle de producto</h2>
-
-  //       <ProductDetail product={selectedProduct} onBack={setSelectedProduct} />
-  //     </>
-  //   );
+  // if (products.length === 0) {
+  //   return <p className="message">No hay productos disponibles</p>;
   // }
 
   return (
@@ -54,18 +49,7 @@ function App() {
       <h1>Clase 09</h1>
 
       <Routes>
-        <Route
-          path="/"
-          element={
-            <section>
-              <h2>Products</h2>
-
-              <ProductList products={products} />
-
-              <p>Cantidad: {products.length}</p>
-            </section>
-          }
-        />
+        <Route path="/" element={<Home products={products} />} />
         <Route
           path="/products/:id"
           element={<ProductDetail products={products} />}
