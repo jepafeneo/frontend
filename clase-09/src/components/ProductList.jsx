@@ -1,14 +1,10 @@
 import ProductCard from "./ProductCard";
 
-function ProductList({ products, onSelectProduct }) {
+function ProductList({ products }) {
   return (
     <div className="product-list">
       {products.map((product) => (
-        <ProductCard
-          key={product._id}
-          product={product}
-          onSelectProduct={onSelectProduct}
-        />
+        <ProductCard key={product._id} product={product} />
       ))}
     </div>
   );
