@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
+import NotFound from "./components/NotFound";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -65,6 +66,7 @@ function App() {
             </section>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
   );
