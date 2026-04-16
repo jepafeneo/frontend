@@ -2,6 +2,8 @@ import Product from "../models/Product.js";
 
 export const getProducts = async (req, res) => {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     const products = await Product.find();
     res.json(products);
   } catch (error) {
