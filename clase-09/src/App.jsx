@@ -66,7 +66,10 @@ function App() {
             </section>
           }
         />
-        <Route path="/products/:id" element={<ProductDetail />} />
+        <Route
+          path="/products/:id"
+          element={<ProductDetail products={products} />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
