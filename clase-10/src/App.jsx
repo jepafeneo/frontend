@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
 import NotFound from "./components/NotFound";
 import Home from "./components/Home";
+import ProductForm from "./components/ProductForm";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -39,10 +40,15 @@ function App() {
   if (error) {
     return <p className="error">{error}</p>;
   }
-  
+
   return (
     <main className="container">
       <h1>Clase 10</h1>
+
+      <nav className="main-nav">
+        <Link to="/">Inicio</Link>
+        <Link to="/products/new">Nuevo producto</Link>
+      </nav>
 
       <Routes>
         <Route path="/" element={<Home products={products} />} />
@@ -50,6 +56,7 @@ function App() {
           path="/products/:id"
           element={<ProductDetail products={products} />}
         />
+        <Route path="/products/new" element={<ProductForm />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
