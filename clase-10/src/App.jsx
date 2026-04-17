@@ -56,7 +56,7 @@ function App() {
           path="/products/:id"
           element={<ProductDetail products={products} />}
         />
-        <Route path="/products/new" element={<ProductForm />} />
+        <Route path="/products/new" element={<ProductForm products={products} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>

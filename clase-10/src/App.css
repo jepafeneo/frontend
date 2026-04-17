@@ -132,6 +132,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-bottom: 1em;
 }
 
 .form-group label {
