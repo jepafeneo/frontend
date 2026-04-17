@@ -23,6 +23,7 @@ function ProductForm({ onAddProduct }) {
     // console.log(!name, name == "", !price, !stock); // !false - !"", !0, !null, !undefined
 
     // if (name == "" || price == "" || stock == "") return;
+    // if (!name || !price || !stock) return;
     if (!form.name || !form.price || !form.stock) return;
 
     const newProduct = {
