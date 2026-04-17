@@ -12,6 +12,10 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const addProduct = (newProduct) => {
+    setProducts([...products, newProduct]);
+  };
+
   const loadProducts = () => {
     fetch("http://localhost:3000/products")
       .then((res) => {
@@ -45,6 +49,8 @@ function App() {
     <main className="container">
       <h1>Clase 10</h1>
 
+      <p>{products.length}</p>
+
       <nav className="main-nav">
         <Link to="/">Inicio</Link>
         <Link to="/products/new">Nuevo producto</Link>
@@ -56,7 +62,10 @@ function App() {
           path="/products/:id"
           element={<ProductDetail products={products} />}
         />
-        <Route path="/products/new" element={<ProductForm products={products} />} />
+        <Route
+          path="/products/new"
+          element={<ProductForm onAddProduct={addProduct} />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
