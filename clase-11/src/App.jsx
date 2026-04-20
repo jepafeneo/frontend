@@ -12,11 +12,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const addProduct = (newProduct) => {
-    setProducts([...products, newProduct]);
-  };
-
-  const loadProducts = () => {
+  const loadProducts =  () => {
     fetch("http://localhost:3000/products")
       .then((res) => {
         if (!res.ok) throw new Error("Error al obtener lo productos");
@@ -62,7 +58,7 @@ function App() {
         />
         <Route
           path="/products/new"
-          element={<ProductForm onAddProduct={addProduct} />}
+          element={<ProductForm loadProducts={loadProducts} />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>

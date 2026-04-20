@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-function ProductForm({ onAddProduct }) {
+function ProductForm({ loadProducts }) {
   const navigate = useNavigate();
 
   const initialState = {
@@ -14,6 +14,7 @@ function ProductForm({ onAddProduct }) {
 
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -23,10 +24,11 @@ function ProductForm({ onAddProduct }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     if (!form.name || !form.price || !form.stock) {
-      // alert("Todos los campos son obligatorios");
       setError("Todos los campos son obligatorios");
+      setLoading(false);
       return;
     }
 
@@ -36,21 +38,30 @@ function ProductForm({ onAddProduct }) {
       stock: form.stock,
     };
 
-    const response = await fetch("http://localhost:3000/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newProduct),
-    });
+    try {
+      const response = await fetch("http://localhost:3000/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newProduct),
+      });
 
-    console.log(response);
+      // console.log(response);
 
-    onAddProduct(newProduct);
+      if (!response.ok) {
+        throw new Error("Error al crear el producto");
+      }
 
-    setForm(initialState);
+      loadProducts();
 
-    navigate("/");
+      setForm(initialState);
+
+      navigate("/");
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,8 +73,9 @@ function ProductForm({ onAddProduct }) {
           <input
             type="text"
             id="name"
+            name="name"
             value={form.name}
-            onChange={(event) => setForm({ ...form, name: event.target.value })}
+            onChange={handleChange}
           />
         </div>
 
@@ -84,11 +96,10 @@ function ProductForm({ onAddProduct }) {
           <input
             type="number"
             id="stock"
+            name="stock"
             value={form.stock}
             min="0"
-            onChange={(event) =>
-              setForm({ ...form, stock: event.target.value })
-            }
+            onChange={handleChange}
           ></input>
         </div>
 
@@ -124,7 +135,13 @@ function ProductForm({ onAddProduct }) {
         {error && <p className="error">{error}</p>}
 
         <div className="form-actions">
-          <button type="submit">Guardar producto</button>
+          <button type="submit" disabled={loading}>
+            Guardar producto
+          </button>
+
+          <button type="button" onClick={() => setForm(initialState)}>
+            Borrar formulario
+          </button>
         </div>
       </form>
     </section>
