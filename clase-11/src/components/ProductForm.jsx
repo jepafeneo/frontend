@@ -21,7 +21,7 @@ function ProductForm({ onAddProduct }) {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!form.name || !form.price || !form.stock) {
@@ -31,13 +31,20 @@ function ProductForm({ onAddProduct }) {
     }
 
     const newProduct = {
-      _id: crypto.randomUUID(),
       name: form.name,
       price: form.price,
       stock: form.stock,
-      category: form.category,
-      description: form.description,
     };
+
+    const response = await fetch("http://localhost:3000/products", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newProduct),
+    });
+
+    console.log(response);
 
     onAddProduct(newProduct);
 
