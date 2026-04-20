@@ -47,7 +47,7 @@ function App() {
 
   return (
     <main className="container">
-      <h1>Clase 10</h1>
+      <h1>Clase 11</h1>
 
       <nav className="main-nav">
         <Link to="/">Inicio</Link>

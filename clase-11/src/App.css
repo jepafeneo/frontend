@@ -168,3 +168,22 @@ button:hover {
 .form-preview p {
   margin: 6px 0;
 }
+
+.form-group textarea {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  resize: vertical;
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: #666;
+}
+
+button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
