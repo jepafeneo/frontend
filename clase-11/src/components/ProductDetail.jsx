@@ -21,6 +21,7 @@ function ProductDetail({ products }) {
 
       <article>
         <h3>{product.name}</h3>
+        <p>{product.description}</p>
         <p>$ {product.price}</p>
         <p>Stock: {product.stock}</p>
       </article>

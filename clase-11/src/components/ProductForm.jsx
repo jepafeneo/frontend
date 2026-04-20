@@ -4,31 +4,44 @@ import { useState } from "react";
 function ProductForm({ onAddProduct }) {
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
+  const initialState = {
     name: "",
     price: "",
     stock: "",
-  });
+    category: "",
+    description: "",
+  };
+
+  const [form, setForm] = useState(initialState);
+  const [error, setError] = useState(null);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setForm({ ...form, [name]: value });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!form.name || !form.price || !form.stock) return;
+    if (!form.name || !form.price || !form.stock) {
+      // alert("Todos los campos son obligatorios");
+      setError("Todos los campos son obligatorios");
+      return;
+    }
 
     const newProduct = {
       _id: crypto.randomUUID(),
       name: form.name,
       price: form.price,
       stock: form.stock,
+      category: form.category,
+      description: form.description,
     };
 
     onAddProduct(newProduct);
 
-    setForm({
-      name: "",
-      price: "",
-      stock: "",
-    });
+    setForm(initialState);
 
     navigate("/");
   };
@@ -52,11 +65,10 @@ function ProductForm({ onAddProduct }) {
           <input
             type="number"
             id="price"
+            name="price"
             value={form.price}
             min="0"
-            onChange={(event) =>
-              setForm({ ...form, price: event.target.value })
-            }
+            onChange={handleChange}
           />
         </div>
 
@@ -72,6 +84,37 @@ function ProductForm({ onAddProduct }) {
             }
           ></input>
         </div>
+
+        <div className="form-group">
+          <label htmlFor="category">Categoría: </label>
+          <input
+            type="text"
+            id="category"
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+          ></input>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="description">Descripción: </label>
+          <textarea
+            type="text"
+            id="name"
+            name="description"
+            rows="5"
+            value={form.description}
+            onChange={handleChange}
+          ></textarea>
+        </div>
+
+        {/* <p className="error" style={{ display: error ? "block" : "none" }}>
+          {error}
+        </p> */}
+
+        {/* { error ? <p className="error">{error}</p> : '' }  */}
+
+        {error && <p className="error">{error}</p>}
 
         <div className="form-actions">
           <button type="submit">Guardar producto</button>
