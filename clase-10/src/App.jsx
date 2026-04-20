@@ -49,8 +49,6 @@ function App() {
     <main className="container">
       <h1>Clase 10</h1>
 
-      <p>{products.length}</p>
-
       <nav className="main-nav">
         <Link to="/">Inicio</Link>
         <Link to="/products/new">Nuevo producto</Link>
