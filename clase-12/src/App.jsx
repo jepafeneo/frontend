@@ -31,21 +31,6 @@ function App() {
     } finally {
       setLoading(false);
     }
-
-    // fetch("http://localhost:3000/products")
-    //   .then((res) => {
-    //     if (!res.ok) throw new Error("Error al obtener lo productos");
-    //     return res.json();
-    //   })
-    //   .then((data) => {
-    //     setProducts(data);
-    //     setLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     setError(error.message);
-    //     setLoading(false);
-    //   });
   };
 
   useEffect(() => {

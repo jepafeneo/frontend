@@ -12,6 +12,7 @@ function EditProductForm({ products, loadProducts }) {
   };
 
   const [form, setForm] = useState(initialState);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const product = products.find((p) => p._id == id);
@@ -33,6 +34,7 @@ function EditProductForm({ products, loadProducts }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     if (!form.name || !form.price || !form.stock) {
       return;
@@ -45,7 +47,7 @@ function EditProductForm({ products, loadProducts }) {
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/products/${id}`, {
+      const response = await fetch(`http://localhost:3001/products/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -64,10 +66,14 @@ function EditProductForm({ products, loadProducts }) {
       navigate("/");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const isDisabled = !form.name || !form.price || !form.stock;
+  //                  !"a" || !"4" || !"1" || true
+  //                 false || false || false || true
+  const isDisabled = !form.name || !form.price || !form.stock || loading;
 
   return (
     <section>
@@ -112,6 +118,10 @@ function EditProductForm({ products, loadProducts }) {
         <div className="form-actions">
           <button type="submit" disabled={isDisabled}>
             Guardar producto
+          </button>
+
+          <button type="button" onClick={() => navigate("/")}>
+            Cancelar
           </button>
         </div>
       </form>
