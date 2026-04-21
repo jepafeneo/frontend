@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-function EditProductForm() {
+function EditProductForm({ products, loadProducts }) {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const initialState = {
     name: "",
     price: "",
@@ -9,14 +13,106 @@ function EditProductForm() {
 
   const [form, setForm] = useState(initialState);
 
+  useEffect(() => {
+    const product = products.find((p) => p._id == id);
+
+    if (product) {
+      setForm({
+        name: product.name,
+        price: product.price,
+        stock: product.stock,
+      });
+    }
+  }, [id, products]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!form.name || !form.price || !form.stock) {
+      return;
+    }
+
+    const updatedProduct = {
+      name: form.name,
+      price: form.price,
+      stock: form.stock,
+    };
+
+    try {
+      const response = await fetch(`http://localhost:3000/products/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedProduct),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al actualizar el producto");
+      }
+
+      setForm(initialState);
+
+      await loadProducts();
+
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const isDisabled = !form.name || !form.price || !form.stock;
+
   return (
     <section>
       <h2>Editar producto</h2>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Nombre: </label>
-          <input type="text" id="name" name="name" value={form.name} />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="price">Precio: </label>
+          <input
+            type="number"
+            min="0"
+            id="price"
+            name="price"
+            value={form.price}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="stock">Stock: </label>
+          <input
+            type="number"
+            min="0"
+            id="stock"
+            name="stock"
+            value={form.stock}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-actions">
+          <button type="submit" disabled={isDisabled}>
+            Guardar producto
+          </button>
         </div>
       </form>
     </section>

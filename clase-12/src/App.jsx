@@ -62,7 +62,10 @@ function App() {
           element={<ProductForm loadProducts={loadProducts} />}
         />
 
-        <Route path="/products/:id/edit" element={<EditProductForm />} />
+        <Route
+          path="/products/:id/edit"
+          element={<EditProductForm products={products} loadProducts={loadProducts} />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
