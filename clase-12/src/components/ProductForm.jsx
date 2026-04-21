@@ -51,7 +51,7 @@ function ProductForm({ loadProducts }) {
         throw new Error("Error al crear el producto");
       }
 
-      loadProducts();
+      await loadProducts();
 
       setForm(initialState);
 
@@ -65,7 +65,7 @@ function ProductForm({ loadProducts }) {
   return (
     <section>
       <h2>Nuevo Producto</h2>
-      
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Nombre: </label>

@@ -57,9 +57,9 @@ function EditProductForm({ products, loadProducts }) {
         throw new Error("Error al actualizar el producto");
       }
 
-      setForm(initialState);
-
       await loadProducts();
+
+      setForm(initialState);
 
       navigate("/");
     } catch (error) {

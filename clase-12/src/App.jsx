@@ -13,21 +13,39 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const loadProducts = () => {
-    fetch("http://localhost:3000/products")
-      .then((res) => {
-        if (!res.ok) throw new Error("Error al obtener lo productos");
-        return res.json();
-      })
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(error.message);
-        setLoading(false);
-      });
+  const loadProducts = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/products");
+
+      if (!response.ok) {
+        throw new Error("Error al obtener lo productos");
+      }
+
+      const data = await response.json();
+
+      setProducts(data);
+      setError(null);
+    } catch (error) {
+      // console.log(error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+
+    // fetch("http://localhost:3000/products")
+    //   .then((res) => {
+    //     if (!res.ok) throw new Error("Error al obtener lo productos");
+    //     return res.json();
+    //   })
+    //   .then((data) => {
+    //     setProducts(data);
+    //     setLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     setError(error.message);
+    //     setLoading(false);
+    //   });
   };
 
   useEffect(() => {
@@ -64,7 +82,9 @@ function App() {
 
         <Route
           path="/products/:id/edit"
-          element={<EditProductForm products={products} loadProducts={loadProducts} />}
+          element={
+            <EditProductForm products={products} loadProducts={loadProducts} />
+          }
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
