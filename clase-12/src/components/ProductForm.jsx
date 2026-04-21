@@ -8,8 +8,6 @@ function ProductForm({ loadProducts }) {
     name: "",
     price: "",
     stock: "",
-    category: "",
-    description: "",
   };
 
   const [form, setForm] = useState(initialState);
@@ -67,6 +65,7 @@ function ProductForm({ loadProducts }) {
   return (
     <section>
       <h2>Nuevo Producto</h2>
+      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Nombre: </label>
@@ -103,29 +102,6 @@ function ProductForm({ loadProducts }) {
           ></input>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="category">Categoría: </label>
-          <input
-            type="text"
-            id="category"
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-          ></input>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="description">Descripción: </label>
-          <textarea
-            type="text"
-            id="name"
-            name="description"
-            rows="5"
-            value={form.description}
-            onChange={handleChange}
-          ></textarea>
-        </div>
-
         {/* <p className="error" style={{ display: error ? "block" : "none" }}>
           {error}
         </p> */}
@@ -137,10 +113,6 @@ function ProductForm({ loadProducts }) {
         <div className="form-actions">
           <button type="submit" disabled={loading}>
             Guardar producto
-          </button>
-
-          <button type="button" onClick={() => setForm(initialState)}>
-            Borrar formulario
           </button>
         </div>
       </form>

@@ -6,13 +6,14 @@ import ProductDetail from "./components/ProductDetail";
 import NotFound from "./components/NotFound";
 import Home from "./components/Home";
 import ProductForm from "./components/ProductForm";
+import EditProductForm from "./components/EditProductForm";
 
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const loadProducts =  () => {
+  const loadProducts = () => {
     fetch("http://localhost:3000/products")
       .then((res) => {
         if (!res.ok) throw new Error("Error al obtener lo productos");
@@ -60,6 +61,8 @@ function App() {
           path="/products/new"
           element={<ProductForm loadProducts={loadProducts} />}
         />
+
+        <Route path="/products/:id/edit" element={<EditProductForm />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
