@@ -1,21 +1,40 @@
 import { useState } from "react";
 
 function App() {
-  const [nombre, setNombre] = useState("");
-  const [correo, setCorreo] = useState("");
-  const [mensaje, setMensaje] = useState("");
+  const [form, setForm] = useState({
+    nombre: "",
+    correo: "",
+    mensaje: "",
+  });
 
-  const handleChangeNombre = (event) => setNombre(event.target.value);
-  const handleChangeCorreo = (event) => setCorreo(event.target.value);
-  const handleChangeMensaje = (event) => setMensaje(event.target.value);
+  const handleChangeNombre = (event) =>
+    setForm({
+      nombre: event.target.value,
+      correo: form.correo,
+      mensaje: form.mensaje,
+    });
+
+  const handleChangeCorreo = (event) =>
+    setForm({
+      nombre: form.nombre,
+      correo: event.target.value,
+      mensaje: form.mensaje,
+    });
+
+  const handleChangeMensaje = (event) =>
+    setForm({
+      nombre: form.nombre,
+      correo: form.correo,
+      mensaje: event.target.value,
+    });
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const consulta = {
-      nombre,
-      correo: correo,
-      mensaje: mensaje,
+      nombre: form.nombre,
+      correo: form.correo,
+      mensaje: form.mensaje,
     };
 
     console.log(consulta);
@@ -29,35 +48,31 @@ function App() {
           name="nombre"
           id="nombre"
           placeholder="Escriba su nombre"
-          value={nombre}
+          value={form.nombre}
           onChange={handleChangeNombre}
         />
-        <p>{nombre}</p>
+        <p>{form.nombre}</p>
 
         <input
           type="correo"
           id="correo"
           placeholder="Escribe tu correo"
-          value={correo}
+          value={form.correo}
           onChange={handleChangeCorreo}
         />
-        <p> {correo} </p>
+        <p> {form.correo} </p>
 
         <textarea
           type="text"
           name="mensaje"
           id="mensaje"
           placeholder="Mensaje"
-          value={mensaje}
+          value={form.mensaje}
           onChange={handleChangeMensaje}
         />
-        <p>{mensaje}</p>
+        <p>{form.mensaje}</p>
 
         <button type="submit">Enviar 1</button>
-
-        {/* <button type="button" onClick={() => console.log("clic")}>
-          Enviar 2
-        </button> */}
       </form>
     </>
   );
