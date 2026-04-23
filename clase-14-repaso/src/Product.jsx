@@ -6,11 +6,11 @@ function Product() {
     price: "",
     stock: "",
   });
+  const [error, setError] = useState("");
 
   const handleChange = (event) => {
-    // const name = event.target.name;
-    // const value = event.target.value;
     const { name, value } = event.target;
+    // console.log(value);
 
     setForm({
       ...form,
@@ -18,35 +18,41 @@ function Product() {
     });
   };
 
-  // const handleChangeName = (event) => {
-  //   setForm({
-  //     name: event.target.value,
-  //     price: form.price,
-  //     stock: form.stock,
-  //   });
-  // };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setError("");
 
-  // const handleChangePrice = (event) => {
-  //   setForm({
-  //     name: form.name,
-  //     price: event.target.value,
-  //     stock: form.stock,
-  //   });
-  // };
+    // if (!form.name || !form.price || !form.stock) {
+    //   setError("Por favor, complete todos los campos");
+    //   return;
+    // }
 
-  // const handleChangeStock = (event) => {
-  //   setForm({
-  //     name: form.name,
-  //     price: form.price,
-  //     stock: event.target.value,
-  //   });
-  // };
+    if (form.title.length < 3) {
+      setError("El titulo tiene que tener 3 caracteres como mínimo");
+      return;
+    }
+
+    if (form.title === "" || form.price === "" || form.stock === "") {
+      setError("Por favor, complete todos los campos");
+      return;
+    }
+
+    console.log(form);
+
+    setForm({
+      title: "",
+      price: "",
+      stock: "",
+    });
+  };
 
   return (
     <>
       <h1>Producto</h1>
 
-      <form>
+      {error && <p className="error">{error}</p>}
+
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title">Titulo: </label>
           <input
@@ -79,6 +85,8 @@ function Product() {
             onChange={handleChange}
           />
         </div>
+
+        <button type="submit">Enviar</button>
 
         <div>
           <p>{form.title}</p>
