@@ -10,7 +10,6 @@ function Product() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    // console.log(value);
 
     setForm({
       ...form,
