@@ -6,7 +6,6 @@ import ProductDetail from "./components/ProductDetail";
 import NotFound from "./components/NotFound";
 import Home from "./components/Home";
 import ProductForm from "./components/ProductForm";
-import EditProductForm from "./components/EditProductForm";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -37,8 +36,6 @@ function App() {
     const confirmDelete = confirm(
       "¿Esta seguro que quiere borrar el producto?",
     );
-
-    // console.log(confirmDelete);
 
     if (!confirmDelete) return;
 
@@ -89,12 +86,14 @@ function App() {
         />
         <Route
           path="/products/new"
-          element={<ProductForm loadProducts={loadProducts} />}
+          element={
+            <ProductForm products={products} loadProducts={loadProducts} />
+          }
         />
         <Route
           path="/products/:id/edit"
           element={
-            <EditProductForm products={products} loadProducts={loadProducts} />
+            <ProductForm products={products} loadProducts={loadProducts} />
           }
         />
         <Route path="*" element={<NotFound />} />

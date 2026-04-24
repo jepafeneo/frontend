@@ -1,8 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-function ProductForm({ loadProducts }) {
+function ProductForm({ products, loadProducts }) {
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const isEdit = Boolean(id);
 
   const initialState = {
     name: "",
@@ -13,6 +16,22 @@ function ProductForm({ loadProducts }) {
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isEdit) {
+      const product = products.find((p) => p._id == id);
+
+      if (product) {
+        setForm({
+          name: product.name,
+          price: product.price,
+          stock: product.stock,
+        });
+      }
+    } else {
+      setForm(initialState);
+    }
+  }, [id, isEdit, products]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -30,23 +49,34 @@ function ProductForm({ loadProducts }) {
       return;
     }
 
-    const newProduct = {
+    const newOrUpdateProduct = {
       name: form.name,
       price: form.price,
       stock: form.stock,
     };
 
+    let url;
+    let method;
+
+    if (isEdit) {
+      url = `http://localhost:3000/products/${id}`;
+      method = "PUT";
+    } else {
+      url = "http://localhost:3000/products";
+      method = "POST";
+    }
+
     try {
-      const response = await fetch("http://localhost:3000/products", {
-        method: "POST",
+      const response = await fetch(url, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newProduct),
+        body: JSON.stringify(newOrUpdateProduct),
       });
 
       if (!response.ok) {
-        throw new Error("Error al crear el producto");
+        throw new Error(`Error al ${isEdit ? `editar` : `crear`} el producto`);
       }
 
       await loadProducts();
@@ -56,13 +86,16 @@ function ProductForm({ loadProducts }) {
       navigate("/");
     } catch (error) {
       setError(error.message);
+    } finally {
       setLoading(false);
     }
   };
 
+  const isDisabled = !form.name || !form.price || !form.stock || loading;
+
   return (
     <section>
-      <h2>Nuevo Producto</h2>
+      <h2>{isEdit ? "Editar" : "Crear"} Producto</h2>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -103,9 +136,15 @@ function ProductForm({ loadProducts }) {
         {error && <p className="error">{error}</p>}
 
         <div className="form-actions">
-          <button type="submit" disabled={loading}>
-            Guardar producto
+          <button type="submit" disabled={isDisabled}>
+            {isEdit ? "Editar" : "Crear"} producto
           </button>
+
+          {isEdit && (
+            <button type="button" onClick={() => navigate("/")}>
+              Cancelar
+            </button>
+          )}
         </div>
       </form>
     </section>
