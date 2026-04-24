@@ -1,6 +1,6 @@
 import ProductList from "./ProductList";
 
-function Home({ products }) {
+function Home({ products, handleDelete }) {
   return (
     <section>
       <h2>Listado de productos</h2>
@@ -9,7 +9,7 @@ function Home({ products }) {
         <p className="message">No hay productos disponibles</p>
       )}
 
-      <ProductList products={products} />
+      <ProductList products={products} handleDelete={handleDelete} />
 
       <p>Cantidad: {products.length}</p>
     </section>
