@@ -33,11 +33,13 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
+    // console.log(req.body);
     const product = new Product(req.body);
     await product.save();
 
     res.status(201).json(product);
   } catch (error) {
+    // console.log(error)
     if (error.name == "ValidationError") {
       return res.status(422).json({ error: error.errors });
     }
