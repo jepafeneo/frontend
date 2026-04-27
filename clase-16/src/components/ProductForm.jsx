@@ -39,20 +39,59 @@ function ProductForm({ products, loadProducts }) {
     setForm({ ...form, [name]: value });
   };
 
+  const validateForm = () => {
+    if (!form.name) {
+      return "El nombre es obligatorio";
+    }
+
+    if (form.name.trim().length < 3) {
+      return "El nombre debe tener al menos 3 caracteres";
+    }
+
+    if (!form.price) {
+      return "El precio es obligatorio";
+    }
+
+    if (isNaN(Number(form.price))) {
+      return "El precio debe ser un numero";
+    }
+
+    if (Number(form.price) <= 0) {
+      return "El precio debe ser mayor a 0";
+    }
+
+    if (!form.stock) {
+      return "El stock es obligatorio";
+    }
+
+    if (isNaN(Number(form.stock))) {
+      return "El stock debe ser un numero";
+    }
+
+    if (Number(form.stock) <= 0) {
+      return "El stock debe ser mayor a 0";
+    }
+
+    return "";
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!form.name || !form.price || !form.stock) {
-      setError("Todos los campos son obligatorios");
+    const validationError = validateForm();
+
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
+    setError("");
     setSaving(true);
 
-    const newOrUpdateProduct = {
-      name: form.name,
-      price: form.price,
-      stock: form.stock,
+    const productData = {
+      name: form.name.trim(),
+      price: Number(form.price),
+      stock: Number(form.stock),
     };
 
     let url;
@@ -72,7 +111,7 @@ function ProductForm({ products, loadProducts }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newOrUpdateProduct),
+        body: JSON.stringify(productData),
       });
 
       if (!response.ok) {
@@ -113,8 +152,8 @@ function ProductForm({ products, loadProducts }) {
           <label htmlFor="price">Precio: </label>
           <input
             type="number"
+            step="any"
             id="price"
-            min="0"
             name="price"
             value={form.price}
             onChange={handleChange}
@@ -125,10 +164,10 @@ function ProductForm({ products, loadProducts }) {
           <label htmlFor="stock">Stock: </label>
           <input
             type="number"
+            step="any"
             id="stock"
             name="stock"
             value={form.stock}
-            min="0"
             onChange={handleChange}
           ></input>
         </div>
@@ -136,7 +175,7 @@ function ProductForm({ products, loadProducts }) {
         {error && <p className="error">{error}</p>}
 
         <div className="form-actions">
-          <button type="submit" disabled={isDisabled}>
+          <button type="submit">
             {saving && (isEdit ? "Editando" : "Creando")}
             {!saving && (isEdit ? "Editar" : "Crear")} producto
           </button>
