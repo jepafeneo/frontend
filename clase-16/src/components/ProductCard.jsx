@@ -7,8 +7,12 @@ function ProductCard({ product, handleDelete }) {
       <p>$ {product.price}</p>
 
       <div className="card-actions">
-        <Link to={"/products/" + product._id}>Detalle</Link>
-        <Link to={`/products/${product._id}/edit`}>Editar</Link>
+        <Link to={"/products/" + product._id} className="button">
+          Detalle
+        </Link>
+        <Link to={`/products/${product._id}/edit`} className="button">
+          Editar
+        </Link>
         <button onClick={() => handleDelete(product._id)}>Eliminar</button>
       </div>
     </article>

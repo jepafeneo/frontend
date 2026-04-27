@@ -11,9 +11,12 @@ function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const loadProducts = async () => {
     try {
+      setLoading(true);
+
       const response = await fetch("http://localhost:3000/products");
 
       if (!response.ok) {
@@ -23,6 +26,7 @@ function App() {
       const data = await response.json();
 
       setProducts(data);
+
       setError(null);
     } catch (error) {
       setError(error.message);
@@ -47,7 +51,10 @@ function App() {
         throw new Error("Error al borrar el producto");
       }
 
-      loadProducts();
+      // await loadProducts();
+      setProducts(products.filter((p) => p._id != id));
+
+      setSuccess("Producto eliminado correctamente");
     } catch (error) {
       console.log(error);
     }
@@ -56,6 +63,14 @@ function App() {
   useEffect(() => {
     loadProducts();
   }, []);
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        setSuccess(null);
+      }, 2000);
+    }
+  }, [success]);
 
   if (loading) {
     return <p className="message">Cargando productos...</p>;
@@ -73,6 +88,8 @@ function App() {
         <Link to="/">Inicio</Link>
         <Link to="/products/new">Nuevo producto</Link>
       </nav>
+
+      {success && <p className="success">{success}</p>}
 
       <Routes>
         <Route

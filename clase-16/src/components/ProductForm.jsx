@@ -15,7 +15,7 @@ function ProductForm({ products, loadProducts }) {
 
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (isEdit) {
@@ -41,13 +41,13 @@ function ProductForm({ products, loadProducts }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
 
     if (!form.name || !form.price || !form.stock) {
       setError("Todos los campos son obligatorios");
-      setLoading(false);
       return;
     }
+
+    setSaving(true);
 
     const newOrUpdateProduct = {
       name: form.name,
@@ -87,11 +87,11 @@ function ProductForm({ products, loadProducts }) {
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
-  const isDisabled = !form.name || !form.price || !form.stock || loading;
+  const isDisabled = !form.name || !form.price || !form.stock || saving;
 
   return (
     <section>
@@ -137,7 +137,8 @@ function ProductForm({ products, loadProducts }) {
 
         <div className="form-actions">
           <button type="submit" disabled={isDisabled}>
-            {isEdit ? "Editar" : "Crear"} producto
+            {saving && (isEdit ? "Editando" : "Creando")}
+            {!saving && (isEdit ? "Editar" : "Crear")} producto
           </button>
 
           {isEdit && (
