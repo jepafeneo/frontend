@@ -65,6 +65,19 @@ function App() {
           <button type="submit">Crear tarea</button>
         </form>
       </section>
+
+      <section className="tasks-section">
+        <h2>Tareas</h2>
+
+        <div className="task-list">
+          {tasks.map((task) => (
+            <article key={task.id} className="task-card">
+              <h3>{task.title}</h3>
+              <p>{task.status}</p>
+            </article>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }
