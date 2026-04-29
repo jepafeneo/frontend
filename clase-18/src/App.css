@@ -125,3 +125,19 @@ button svg {
   color: #15803d;
   font-weight: bold;
 }
+
+.success {
+  color: #15803d;
+  background-color: #dcfce7;
+  border: 1px solid #86efac;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.success-delete {
+  color: #f41c26;
+  background-color: #dcfce7;
+  border: 1px solid #86efac;
+  padding: 10px;
+  border-radius: 6px;
+}

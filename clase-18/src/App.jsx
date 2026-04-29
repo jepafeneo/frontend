@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 const initialForm = {
@@ -10,9 +10,12 @@ function App() {
   const [form, setForm] = useState(initialForm);
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   // const [editing, setEditing] = useState(false)
   const [editingId, setEditingId] = useState(null);
+
+  const [deletingId, setDeletingId] = useState(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -49,6 +52,7 @@ function App() {
       });
 
       setTasks(updatedTasks);
+      setSuccess("Tarea actualizada correctamente");
       setEditingId(null);
     } else {
       const task = {
@@ -59,6 +63,7 @@ function App() {
 
       // tasks.push(task) // No usar con estados
       setTasks([...tasks, task]);
+      setSuccess("Tarea creada correctamente");
     }
 
     setForm(initialForm);
@@ -68,7 +73,14 @@ function App() {
     // const filtered = tasks.filter((t) => t.id != id);
     // setTasks(filtered);
 
+    const confirmado = confirm("¿esta seguro?");
+
+    if (!confirmado) return;
+
     setTasks(tasks.filter((t) => t.id != id));
+
+    setDeletingId(id);
+    setSuccess("Tarea eliminada correctamente");
   };
 
   const handleEdit = (task) => {
@@ -85,12 +97,25 @@ function App() {
     setEditingId(null);
   };
 
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        setSuccess("");
+        setDeletingId(null);
+      }, 3000);
+    }
+  }, [success]);
+
   return (
     <main className="container">
       <h1>Gestor de tareas</h1>
 
       <section className="form-section">
         <h2>{editingId ? "Editar" : "Nueva"} tarea</h2>
+
+        {success && (
+          <p className={deletingId ? "success-delete" : "success"}>{success}</p>
+        )}
 
         <form onSubmit={handleSubmit} className="task-form">
           <div className="form-group">
