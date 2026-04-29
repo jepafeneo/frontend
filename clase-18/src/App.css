@@ -71,6 +71,15 @@ button {
   color: white;
   border-radius: 6px;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+button svg {
+  width: 18px;
 }
 
 .actions {
