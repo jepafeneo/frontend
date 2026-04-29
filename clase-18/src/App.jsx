@@ -11,6 +11,9 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState("");
 
+  // const [editing, setEditing] = useState(false)
+  const [editingId, setEditingId] = useState(null);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -32,14 +35,32 @@ function App() {
 
     setError("");
 
-    const task = {
-      id: crypto.randomUUID(),
-      title: form.title,
-      status: form.status,
-    };
+    if (editingId) {
+      const updatedTasks = tasks.map((t) => {
+        if (t.id == editingId) {
+          return {
+            ...t,
+            title: form.title,
+            status: form.status,
+          };
+        }
 
-    // tasks.push(task) // No usar con estados
-    setTasks([...tasks, task]);
+        return t;
+      });
+
+      setTasks(updatedTasks);
+      setEditingId(null);
+    } else {
+      const task = {
+        id: crypto.randomUUID(),
+        title: form.title,
+        status: form.status,
+      };
+
+      // tasks.push(task) // No usar con estados
+      setTasks([...tasks, task]);
+    }
+
     setForm(initialForm);
   };
 
@@ -50,12 +71,26 @@ function App() {
     setTasks(tasks.filter((t) => t.id != id));
   };
 
+  const handleEdit = (task) => {
+    setForm({
+      title: task.title,
+      status: task.status,
+    });
+
+    setEditingId(task.id);
+  };
+
+  const handleCancelEdit = () => {
+    setForm(initialForm);
+    setEditingId(null);
+  };
+
   return (
     <main className="container">
       <h1>Gestor de tareas</h1>
 
       <section className="form-section">
-        <h2>Nueva tarea</h2>
+        <h2>{editingId ? "Editar" : "Nueva"} tarea</h2>
 
         <form onSubmit={handleSubmit} className="task-form">
           <div className="form-group">
@@ -84,22 +119,53 @@ function App() {
 
           {error && <p className="error">{error}</p>}
 
-          <button type="submit">Crear tarea</button>
+          <div className="actions">
+            <button type="submit">
+              {editingId ? "Editar tarea" : "Nueva tarea"}
+            </button>
+
+            {editingId && (
+              <button type="button" onClick={handleCancelEdit}>
+                Cancelar
+              </button>
+            )}
+          </div>
         </form>
       </section>
 
       <section className="tasks-section">
         <h2>Tareas</h2>
 
+        {tasks.length == 0 ? <p>No hay tareas</p> : null}
+
+        {tasks.length == 0 && <p>No hay tareas</p>}
+
         <div className="task-list">
           {tasks.map((task) => (
             <article key={task.id} className="task-card">
               <h3>{task.title}</h3>
-              <p>{task.status}</p>
+              <p
+                className={
+                  task.status == "pending" ? "status-pending" : "status-done"
+                }
+              >
+                Estado: {task.status == "pending" ? "Pendiente" : "Terminada"}
+              </p>
 
               <div className="actions">
-                <button type="button">Editar</button>
-                <button type="button" onClick={() => handleDelete(task.id)}>
+                <button
+                  type="button"
+                  className="btn-edit"
+                  onClick={() => handleEdit(task)}
+                >
+                  Editar
+                </button>
+
+                <button
+                  type="button"
+                  className="btn-delete"
+                  onClick={() => handleDelete(task.id)}
+                >
                   Eliminar
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

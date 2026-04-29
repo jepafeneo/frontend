@@ -53,11 +53,21 @@ select {
   display: grid;
   gap: 12px;
 }
+
 .task-card {
   background-color: #fafafa;
   border: 1px solid #ddd;
   padding: 16px;
   border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-card h3,
+.task-card p {
+  margin: 0;
 }
 
 .error {
@@ -80,9 +90,38 @@ button {
 
 button svg {
   width: 18px;
+  height: 18px;
+  color: white;
+  stroke: currentColor;
+}
+
+.btn-edit {
+  background-color: #2563eb;
+}
+
+.btn-edit:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-delete {
+  background-color: #dc2626;
+}
+
+.btn-delete:hover {
+  background-color: #b91c1c;
 }
 
 .actions {
   display: flex;
   gap: 8px;
+}
+
+.status-pending {
+  color: #b45309;
+  font-weight: bold;
+}
+
+.status-done {
+  color: #15803d;
+  font-weight: bold;
 }
