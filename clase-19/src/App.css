@@ -248,3 +248,18 @@ button:disabled {
 .auth-section .success {
   color: green;
 }
+
+.auth-form {
+  margin-top: 30px;
+}
+
+.auth-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}

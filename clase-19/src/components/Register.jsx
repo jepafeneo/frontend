@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { UserPlusIcon } from "@heroicons/react/24/outline";
 
 const initialState = {
   email: "",
@@ -11,6 +12,7 @@ function Register() {
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -38,7 +40,7 @@ function Register() {
     return null;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const validationError = validateForm();
@@ -48,11 +50,38 @@ function Register() {
       return;
     }
 
-    console.log(form);
+    setSaving(true);
 
-    setError(null);
-    setSuccess("Formulario válido. Ahora falta enviarlo al backend.");
-    setForm(initialState);
+    const user = {
+      email: form.email.trim(),
+      password: form.password,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+
+      const data = await response.json();
+
+      //   console.log(data);
+
+      if (!response.ok) {
+        throw new Error(data.error || `Error al registrar un usuario`);
+      }
+
+      setError(null);
+      setSuccess("Cuenta creada correctamente");
+      setForm(initialState);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   useEffect(() => {
@@ -63,18 +92,23 @@ function Register() {
     }
   }, [success]);
 
+  const isDisabled = !form.email || !form.password || saving;
+
   return (
     <section className="auth-section">
-      <h2>Crear cuenta</h2>
+      <h2 className="auth-title">
+        <UserPlusIcon className="icon" />
+        Crear cuenta
+      </h2>
       <p>Regístrate para poder acceder a la aplicación.</p>
 
       {success && <p className="success">{success}</p>}
 
-      <form onSubmit={handleSubmit}>
+      <form className="auth-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="email">Correo: </label>
           <input
-            type="text"
+            type="email"
             name="email"
             id="email"
             value={form.email}
@@ -95,7 +129,9 @@ function Register() {
 
         {error && <p className="error">{error}</p>}
 
-        <button type="submit">Crear cuenta</button>
+        <button type="submit" disabled={isDisabled}>
+          Crear cuenta
+        </button>
       </form>
     </section>
   );
