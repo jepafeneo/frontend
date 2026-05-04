@@ -7,6 +7,7 @@ import NotFound from "./components/NotFound";
 import Home from "./components/Home";
 import ProductForm from "./components/ProductForm";
 import Register from "./components/Register";
+import Login from "./components/Login";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -89,6 +90,7 @@ function App() {
         <Link to="/">Inicio</Link>
         <Link to="/products/new">Nuevo producto</Link>
         <Link to="/register">Crear cuenta</Link>
+        <Link to="/login">Iniciar sección</Link>
       </nav>
 
       {success && <p className="success">{success}</p>}
@@ -115,6 +117,7 @@ function App() {
           }
         />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
