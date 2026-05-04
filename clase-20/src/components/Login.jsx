@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const initialState = {
   email: "",
@@ -10,6 +10,8 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function Login() {
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -40,8 +42,6 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(form);
-
     const validationError = validateForm();
 
     if (validationError) {
@@ -50,6 +50,7 @@ function Login() {
     }
 
     setError(null);
+    setSaving(true);
 
     const user = {
       email: form.email.trim(),
@@ -72,10 +73,28 @@ function Login() {
       if (!response.ok) {
         throw new Error(data.error || `Error al registrar un usuario`);
       }
+
+      localStorage.setItem("token", data.token);
+
+      setError(null);
+      setSuccess("Se inicio la session correctamente");
+      setForm(initialState);
     } catch (error) {
       setError(error.message);
+    } finally {
+      setSaving(false);
     }
   };
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        setSuccess(null);
+      }, 2000);
+    }
+  }, [success]);
+
+  const isDisabled = !form.email || !form.password || saving;
 
   return (
     <section className="auth-section">
@@ -83,6 +102,8 @@ function Login() {
         <h2>Iniciar sección</h2>
       </div>
       <p>Iniciar sección para poder acceder a la aplicación.</p>
+
+      {success && <p className="success">{success}</p>}
 
       <form className="auth-form" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -108,7 +129,9 @@ function Login() {
 
         {error && <p className="error">{error}</p>}
 
-        <button type="submit">Iniciar sección</button>
+        <button type="submit" disabled={isDisabled}>
+          Iniciar sección
+        </button>
       </form>
     </section>
   );
