@@ -263,3 +263,22 @@ button:disabled {
   width: 24px;
   height: 24px;
 }
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 42px;
+}
+
+.password-wrapper button {
+  position: absolute;
+  right: 8px;
+  top: 30%;
+  border: none;
+  background: transparent;
+  color: black;
+  cursor: pointer;
+}

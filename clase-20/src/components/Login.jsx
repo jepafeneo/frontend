@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const initialState = {
   email: "",
@@ -12,6 +13,7 @@ function Login() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -68,7 +70,7 @@ function Login() {
 
       const data = await response.json();
 
-      console.log(data);
+      // console.log(data);
 
       if (!response.ok) {
         throw new Error(data.error || `Error al registrar un usuario`);
@@ -116,15 +118,30 @@ function Login() {
             onChange={handleChange}
           />
         </div>
+
         <div className="form-group">
           <label htmlFor="password">Contraseña: </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={form.password}
-            onChange={handleChange}
-          />
+
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              id="password"
+              value={form.password}
+              onChange={handleChange}
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeSlashIcon className="icon" />
+              ) : (
+                <EyeIcon className="icon" />
+              )}
+            </button>
+          </div>
         </div>
 
         {error && <p className="error">{error}</p>}
