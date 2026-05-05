@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getProfile } from "../services/AuthService";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -6,25 +7,9 @@ function Profile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getProfile = async () => {
+    const loadProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-          throw new Error("No esta guardado el token");
-        }
-
-        const response = await fetch("http://localhost:3000/auth/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "Error al obtener el perfil.");
-        }
+        const data = await getProfile();
 
         setUser(data);
       } catch (error) {
@@ -34,7 +19,7 @@ function Profile() {
       }
     };
 
-    getProfile();
+    loadProfile();
   }, []);
 
   if (loading) {

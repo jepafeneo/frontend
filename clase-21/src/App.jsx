@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import "./App.css";
 import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
@@ -11,10 +11,13 @@ import Login from "./components/Login";
 import Profile from "./components/Profile";
 
 function App() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  const token = localStorage.getItem("token");
 
   const loadProducts = async () => {
     try {
@@ -75,6 +78,11 @@ function App() {
     }
   }, [success]);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   if (loading) {
     return <p className="message">Cargando productos...</p>;
   }
@@ -90,9 +98,20 @@ function App() {
       <nav className="main-nav">
         <Link to="/">Inicio</Link>
         <Link to="/products/new">Nuevo producto</Link>
-        <Link to="/register">Crear cuenta</Link>
-        <Link to="/login">Iniciar sección</Link>
-        <Link to="/profile">Mi perfil</Link>
+
+        {!token ? (
+          <>
+            <Link to="/register">Crear cuenta</Link>
+            <Link to="/login">Iniciar sección</Link>
+          </>
+        ) : (
+          <>
+            <Link to="/profile">Mi perfil</Link>
+            <button type="button" onClick={handleLogout}>
+              Cerrar session
+            </button>
+          </>
+        )}
       </nav>
 
       {success && <p className="success">{success}</p>}

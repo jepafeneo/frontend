@@ -52,3 +52,22 @@ export const loginUser2 = async (email, password) => {
   return data;
 };
 
+export const getProfile = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No está guardado el token");
+  }
+
+  const response = await fetch(`${API_URL}/profile`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    new Error(data.error || "Error al obtener el perfil.");
+  }
+
+  return data;
+};

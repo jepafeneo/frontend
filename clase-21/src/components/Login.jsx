@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { loginUser } from "../services/AuthService";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   email: "",
@@ -10,6 +11,7 @@ const initialState = {
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function Login() {
+  const navigate = useNavigate();
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -68,6 +70,8 @@ function Login() {
       setError(null);
       setSuccess("Se inicio la session correctamente");
       setForm(initialState);
+
+      navigate("/");
     } catch (error) {
       setError(error.message);
     } finally {
