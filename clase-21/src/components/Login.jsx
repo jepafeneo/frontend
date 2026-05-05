@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { loginUser } from "../services/AuthService";
 
 const initialState = {
   email: "",
@@ -60,21 +61,7 @@ function Login() {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-
-      const data = await response.json();
-
-      // console.log(data);
-
-      if (!response.ok) {
-        throw new Error(data.error || `Error al registrar un usuario`);
-      }
+      const data = await loginUser(user);
 
       localStorage.setItem("token", data.token);
 

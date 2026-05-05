@@ -17,3 +17,38 @@ export const registerUser = async (user) => {
 
   return data;
 };
+
+export const loginUser = async (user) => {
+  const response = await fetch(`${API_URL}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Error al iniciar sesión.");
+  }
+
+  return data;
+};
+
+export const loginUser2 = async (email, password) => {
+  const response = await fetch(`${API_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Error al iniciar sesión");
+  }
+
+  return data;
+};
+
