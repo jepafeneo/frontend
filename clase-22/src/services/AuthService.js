@@ -66,16 +66,10 @@ export const getProfile = async () => {
 
   const data = await response.json();
 
-  if (response.status == 401) {
-    localStorage.removeItem("token");
-
-    window.location = "/login";
-
-    return;
-  }
-
   if (!response.ok) {
-    throw new Error(data.error || "Error al obtener el perfil.");
+    const error = new Error(data.error || "Error al obtener el perfil.");
+    error.status = response.status;
+    throw error;
   }
 
   return data;

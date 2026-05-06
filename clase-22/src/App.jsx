@@ -52,7 +52,18 @@ function App() {
     try {
       const response = await fetch(`http://localhost:3000/products/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      if (response.status == 401) {
+        localStorage.removeItem("token");
+
+        navigate("/login");
+
+        return;
+      }
 
       if (!response.ok) {
         throw new Error("Error al borrar el producto");

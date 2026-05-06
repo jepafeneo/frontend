@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { getProfile } from "../services/AuthService";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,6 +15,14 @@ function Profile() {
 
         setUser(data);
       } catch (error) {
+        if (error.status == 401) {
+          localStorage.removeItem("token");
+
+          navigate("/login");
+
+          return;
+        }
+
         setError(error.message);
       } finally {
         setLoading(false);

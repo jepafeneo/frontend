@@ -18,7 +18,7 @@ function ProductCard({ product, handleDelete }) {
             <Link to={`/products/${product._id}/edit`} className="button">
               Editar
             </Link>
-            <button onClik={() => handleDelete(product._id)}>Eliminar</button>
+            <button onClick={() => handleDelete(product._id)}>Eliminar</button>
           </>
         )}
       </div>
