@@ -33,13 +33,13 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    // console.log(req.body);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     const product = new Product(req.body);
     await product.save();
 
     res.status(201).json(product);
   } catch (error) {
-    // console.log(error)
     if (error.name == "ValidationError") {
       return res.status(422).json({ error: error.errors });
     }
@@ -54,6 +54,8 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const { id } = req.params;
 
     const product = await Product.findById(id);

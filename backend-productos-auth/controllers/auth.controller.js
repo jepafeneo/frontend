@@ -11,6 +11,8 @@ const createToken = (user) => {
 
 export const register = async (req, res) => {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const { email, password } = req.body;
     const normalizedEmail = email?.trim().toLowerCase();
 
@@ -62,6 +64,8 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const { email, password } = req.body;
     const normalizedEmail = email?.trim().toLowerCase();
 
@@ -109,6 +113,8 @@ export const login = async (req, res) => {
 
 export const profile = async (req, res) => {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const user = await User.findById(req.user.id).select("-password");
 
     if (!user) {
