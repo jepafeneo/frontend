@@ -1,4 +1,5 @@
 const API_URL = "http://localhost:3000/auth";
+import { Navigate } from "react-router-dom";
 
 export const registerUser = async (user) => {
   const response = await fetch(`${API_URL}/register`, {
@@ -64,6 +65,14 @@ export const getProfile = async () => {
   });
 
   const data = await response.json();
+
+  if (response.status == 401) {
+    localStorage.removeItem("token");
+
+    window.location = "/login";
+
+    return;
+  }
 
   if (!response.ok) {
     throw new Error(data.error || "Error al obtener el perfil.");

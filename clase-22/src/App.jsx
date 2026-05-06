@@ -9,6 +9,7 @@ import ProductForm from "./components/ProductForm";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const navigate = useNavigate();
@@ -97,7 +98,8 @@ function App() {
 
       <nav className="main-nav">
         <Link to="/">Inicio</Link>
-        <Link to="/products/new">Nuevo producto</Link>
+
+        {token && <Link to="/products/new">Nuevo producto</Link>}
 
         {!token ? (
           <>
@@ -125,21 +127,39 @@ function App() {
           path="/products/:id"
           element={<ProductDetail products={products} />}
         />
+
         <Route
           path="/products/new"
           element={
-            <ProductForm products={products} loadProducts={loadProducts} />
+            <ProtectedRoute
+              element={
+                <ProductForm products={products} loadProducts={loadProducts} />
+              }
+            />
           }
         />
+
         <Route
           path="/products/:id/edit"
           element={
-            <ProductForm products={products} loadProducts={loadProducts} />
+            <ProtectedRoute
+              element={
+                <ProductForm products={products} loadProducts={loadProducts} />
+              }
+            />
           }
         />
+
         <Route path="/register" element={<Register />} />
+
+        {/* {!token && <Route path="/login" element={<Login />} />} */}
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
+
+        <Route
+          path="/profile"
+          element={<ProtectedRoute element={<Profile />} />}
+        />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>

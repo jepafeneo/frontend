@@ -15,7 +15,7 @@ function Login() {
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (event) => {
@@ -55,7 +55,7 @@ function Login() {
     }
 
     setError(null);
-    setSaving(true);
+    setLoading(true);
 
     const user = {
       email: form.email.trim(),
@@ -75,7 +75,7 @@ function Login() {
     } catch (error) {
       setError(error.message);
     } finally {
-      setSaving(false);
+      setLoading(false);
     }
   };
 
@@ -87,7 +87,15 @@ function Login() {
     }
   }, [success]);
 
-  const isDisabled = !form.email || !form.password || saving;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      navigate("/");
+    }
+  }, []);
+
+  const isDisabled = !form.email || !form.password || loading;
 
   return (
     <section className="auth-section">
@@ -138,7 +146,7 @@ function Login() {
         {error && <p className="error">{error}</p>}
 
         <button type="submit" disabled={isDisabled}>
-          Iniciar sección
+          {loading ? "Iniciando sesión" : "Iniciar sesión"}
         </button>
       </form>
     </section>

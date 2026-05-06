@@ -106,16 +106,31 @@ function ProductForm({ products, loadProducts }) {
     }
 
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(url, {
         method: method,
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(productData),
       });
 
+      const data = await response.json();
+
+      if (response.status == 401) {
+        localStorage.removeItem("token");
+
+        navigate("/login");
+
+        return;
+      }
+
       if (!response.ok) {
-        throw new Error(`Error al ${isEdit ? `editar` : `crear`} el producto`);
+        throw new Error(
+          data.error || `Error al ${isEdit ? `editar` : `crear`} el producto`,
+        );
       }
 
       await loadProducts();
