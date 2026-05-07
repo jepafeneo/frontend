@@ -40,6 +40,10 @@ export const createProduct = async (req, res) => {
 
     res.status(201).json(product);
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({ error: "Product name must be unique" });
+    }
+
     if (error.name == "ValidationError") {
       return res.status(422).json({ error: error.errors });
     }
