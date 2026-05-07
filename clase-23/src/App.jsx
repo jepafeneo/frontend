@@ -52,13 +52,13 @@ function App() {
 
       setSuccess("Producto eliminado correctamente");
     } catch (error) {
-      // if (error.status == 401) {
-      //   localStorage.removeItem("token");
+      if (error.status == 401) {
+        localStorage.removeItem("token");
 
-      //   navigate("/login");
+        navigate("/login");
 
-      //   return;
-      // }
+        return;
+      }
 
       setError(error.message);
     }

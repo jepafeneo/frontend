@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { createProduct, updateProduct } from "../services/ProductService";
 
 const initialState = {
   name: "",
@@ -94,32 +95,18 @@ function ProductForm({ products, loadProducts }) {
       stock: Number(form.stock),
     };
 
-    let url;
-    let method;
-
-    if (isEdit) {
-      url = `http://localhost:3000/products/${id}`;
-      method = "PUT";
-    } else {
-      url = "http://localhost:3000/products";
-      method = "POST";
-    }
-
     try {
-      const token = localStorage.getItem("token");
+      if (isEdit) {
+        await updateProduct(productData, id);
+      } else {
+        await createProduct(productData);
+      }
 
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(productData),
-      });
-
-      const data = await response.json();
-
-      if (response.status == 401) {
+      await loadProducts();
+      setForm(initialState);
+      navigate("/");
+    } catch (error) {
+      if (error.status == 401) {
         localStorage.removeItem("token");
 
         navigate("/login");
@@ -127,18 +114,6 @@ function ProductForm({ products, loadProducts }) {
         return;
       }
 
-      if (!response.ok) {
-        throw new Error(
-          data.error || `Error al ${isEdit ? `editar` : `crear`} el producto`,
-        );
-      }
-
-      await loadProducts();
-
-      setForm(initialState);
-
-      navigate("/");
-    } catch (error) {
       setError(error.message);
     } finally {
       setSaving(false);

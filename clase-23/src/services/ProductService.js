@@ -34,3 +34,50 @@ export const deleteProduct = async (id) => {
 
   return true;
 };
+
+export const createProduct = async (product) => {
+  const token = getToken();
+
+  const response = await fetch(URL_API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(product),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = new Error(data.error || `Error al crear el producto`);
+    error.status = response.status;
+    throw error;
+  }
+
+  return data;
+};
+
+export const updateProduct = async (product, id) => {
+  const token = getToken();
+
+  //                           `${URL_API}/${id}`
+  const response = await fetch(URL_API + "/" + id, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(product),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = new Error(data.error || `Error al editar el producto`);
+    error.status = response.status;
+    throw error;
+  }
+
+  return data;
+};
