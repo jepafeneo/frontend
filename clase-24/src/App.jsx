@@ -12,14 +12,16 @@ import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { getProducts, deleteProduct } from "./services/ProductService";
 
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
+
 function App() {
+  const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
-  const token = localStorage.getItem("token");
 
   const loadProducts = async () => {
     try {
@@ -54,6 +56,7 @@ function App() {
     } catch (error) {
       if (error.status == 401) {
         localStorage.removeItem("token");
+        setUser(null);
 
         navigate("/login");
 
@@ -78,6 +81,7 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setUser(null);
     navigate("/");
   };
 
@@ -111,9 +115,9 @@ function App() {
       <nav className="main-nav">
         <Link to="/">Inicio</Link>
 
-        {token && <Link to="/products/new">Nuevo producto</Link>}
+        {user && <Link to="/products/new">Nuevo producto</Link>}
 
-        {!token ? (
+        {!user ? (
           <>
             <Link to="/register">Crear cuenta</Link>
             <Link to="/login">Iniciar sección</Link>
@@ -164,7 +168,7 @@ function App() {
 
         <Route path="/register" element={<Register />} />
 
-        {/* {!token && <Route path="/login" element={<Login />} />} */}
+        {/* {!user && <Route path="/login" element={<Login />} />} */}
         <Route path="/login" element={<Login />} />
 
         <Route

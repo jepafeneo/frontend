@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function ProductCard({ product, handleDelete }) {
-  const token = localStorage.getItem("token");
+  const { user } = useContext(AuthContext);
 
   return (
     <article className="product-card">
@@ -13,7 +15,7 @@ function ProductCard({ product, handleDelete }) {
           Detalle
         </Link>
 
-        {token && (
+        {user && (
           <>
             <Link to={`/products/${product._id}/edit`} className="button">
               Editar
