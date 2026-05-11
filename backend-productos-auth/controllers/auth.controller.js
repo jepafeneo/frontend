@@ -11,14 +11,14 @@ const createToken = (user) => {
 
 export const register = async (req, res) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
     const normalizedEmail = email?.trim().toLowerCase();
 
-    if (!normalizedEmail || !password) {
+    if (!name || !normalizedEmail || !password) {
       return res.status(400).json({
-        error: "Email and password required",
+        error: "Name, email and password required",
       });
     }
 
@@ -27,6 +27,12 @@ export const register = async (req, res) => {
     if (!emailRegex.test(normalizedEmail)) {
       return res.status(400).json({
         error: "Invalid email",
+      });
+    }
+
+    if (name.trim().length < 2) {
+      return res.status(400).json({
+        error: "Name too short",
       });
     }
 
@@ -47,15 +53,19 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
+      name,
       email: normalizedEmail,
       password: hashedPassword,
     });
 
     res.status(201).json({
       id: user._id,
+      name: user.name,
       email: user.email,
     });
   } catch (error) {
+    // console.log(error);
+
     res.status(500).json({
       error: "Error creating user",
     });
@@ -64,7 +74,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const { email, password } = req.body;
     const normalizedEmail = email?.trim().toLowerCase();
@@ -103,8 +113,15 @@ export const login = async (req, res) => {
 
     res.json({
       token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     });
   } catch (error) {
+    // console.log(error);
+
     res.status(500).json({
       error: "Error logging in",
     });
@@ -113,7 +130,7 @@ export const login = async (req, res) => {
 
 export const profile = async (req, res) => {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const user = await User.findById(req.user.id).select("-password");
 

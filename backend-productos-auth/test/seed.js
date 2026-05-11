@@ -11,11 +11,13 @@ export async function seedDatabase() {
   await Product.deleteMany({});
 
   const user1 = await User.create({
+    name: "Test User",
     email: "test@example.com",
     password: await bcrypt.hash("123456", 10),
   });
 
   const user2 = await User.create({
+    name: "Other User",
     email: "other@example.com",
     password: await bcrypt.hash("123456", 10),
   });
