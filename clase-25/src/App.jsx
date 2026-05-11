@@ -17,7 +17,7 @@ import { AuthContext } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 
 function App() {
-  const { user, setUser } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,8 +56,7 @@ function App() {
       setSuccess("Producto eliminado correctamente");
     } catch (error) {
       if (error.status == 401) {
-        localStorage.removeItem("token");
-        setUser(null);
+        logout();
 
         navigate("/login");
 

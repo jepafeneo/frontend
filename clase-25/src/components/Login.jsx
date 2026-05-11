@@ -14,8 +14,7 @@ const initialState = {
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function Login() {
-  const { setUser } = useContext(AuthContext);
-
+  const { user, login, authLoading } = useContext(AuthContext);
   const navigate = useNavigate();
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
@@ -70,11 +69,7 @@ function Login() {
     try {
       const data = await loginUser(user);
 
-      localStorage.setItem("token", data.token);
-
-      const profile = await getProfile();
-
-      setUser(profile);
+      login(data.user, data.token);
 
       setError(null);
       setSuccess("Se inicio la session correctamente");
@@ -97,14 +92,16 @@ function Login() {
   }, [success]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
+    if (user) {
       navigate("/");
     }
-  }, []);
+  }, [authLoading]);
 
   const isDisabled = !form.email || !form.password || loading;
+
+  if (authLoading) {
+    return <p>Verificando usuario...</p>;
+  }
 
   return (
     <section className="auth-section">

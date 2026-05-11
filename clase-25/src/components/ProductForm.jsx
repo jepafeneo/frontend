@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { createProduct, updateProduct } from "../services/ProductService";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const initialState = {
   name: "",
@@ -9,6 +11,7 @@ const initialState = {
 };
 
 function ProductForm({ products, loadProducts }) {
+  const { logout } = useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -107,7 +110,7 @@ function ProductForm({ products, loadProducts }) {
       navigate("/");
     } catch (error) {
       if (error.status == 401) {
-        localStorage.removeItem("token");
+        logout();
 
         navigate("/login");
 

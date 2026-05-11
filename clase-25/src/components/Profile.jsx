@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { getProfile } from "../services/AuthService";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function Profile() {
+  const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
@@ -16,7 +19,7 @@ function Profile() {
         setUser(data);
       } catch (error) {
         if (error.status == 401) {
-          localStorage.removeItem("token");
+          logout();
 
           navigate("/login");
 
