@@ -6,36 +6,34 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    async function loadProfile() {
+    async function verifyUser() {
       const token = localStorage.getItem("token");
 
-      if (!token) return;
+      if (!token) {
+        setAuthLoading(false);
+        return;
+      }
 
       try {
         const data = await getProfile();
-        // console.log(data);
+
         setUser(data);
-
-        // const { email, _id } = data;
-
-        // setUser({
-        //   _id,
-        //   email,
-        // });
       } catch {
         localStorage.removeItem("token");
         setUser(null);
-        // console.log(error);
+      } finally {
+        setAuthLoading(false);
       }
     }
 
-    loadProfile();
+    verifyUser();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, authLoading }}>
       {children}
     </AuthContext.Provider>
   );

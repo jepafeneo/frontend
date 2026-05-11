@@ -14,6 +14,7 @@ import { getProducts, deleteProduct } from "./services/ProductService";
 
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
+import Navbar from "./components/Navbar";
 
 function App() {
   const { user, setUser } = useContext(AuthContext);
@@ -79,20 +80,6 @@ function App() {
     }
   }, [success]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-    navigate("/");
-  };
-
-  // useEffect(() => {
-  //   if (error) {
-  //     setTimeout(() => {
-  //       setError(null);
-  //     }, 3000);
-  //   }
-  // }, [error]);
-
   if (loading) {
     return <p className="message">Cargando productos...</p>;
   }
@@ -112,25 +99,7 @@ function App() {
     <main className="container">
       <h1>Clase 25</h1>
 
-      <nav className="main-nav">
-        <Link to="/">Inicio</Link>
-
-        {user && <Link to="/products/new">Nuevo producto</Link>}
-
-        {!user ? (
-          <>
-            <Link to="/register">Crear cuenta</Link>
-            <Link to="/login">Iniciar sección</Link>
-          </>
-        ) : (
-          <>
-            <Link to="/profile">Mi perfil</Link>
-            <button type="button" onClick={handleLogout}>
-              Cerrar session
-            </button>
-          </>
-        )}
-      </nav>
+      <Navbar />
 
       {success && <p className="success">{success}</p>}
 
@@ -147,33 +116,32 @@ function App() {
         <Route
           path="/products/new"
           element={
-            <ProtectedRoute
-              element={
-                <ProductForm products={products} loadProducts={loadProducts} />
-              }
-            />
+            <ProtectedRoute>
+              <ProductForm products={products} loadProducts={loadProducts} />
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/products/:id/edit"
           element={
-            <ProtectedRoute
-              element={
-                <ProductForm products={products} loadProducts={loadProducts} />
-              }
-            />
+            <ProtectedRoute>
+              <ProductForm products={products} loadProducts={loadProducts} />
+            </ProtectedRoute>
           }
         />
 
         <Route path="/register" element={<Register />} />
 
-        {/* {!user && <Route path="/login" element={<Login />} />} */}
         <Route path="/login" element={<Login />} />
 
         <Route
           path="/profile"
-          element={<ProtectedRoute element={<Profile />} />}
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
         />
 
         <Route path="*" element={<NotFound />} />

@@ -1,13 +1,19 @@
 import { Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
-function ProtectedRoute({ element }) {
-  const token = localStorage.getItem("token");
+function ProtectedRoute({ children }) {
+  const { user, authLoading } = useContext(AuthContext);
 
-  if (!token) {
+  if (authLoading) {
+    return <p>Verificando usuario...</p>;
+  }
+
+  if (!user) {
     return <Navigate to="/login" />;
   }
 
-  return element;
+  return children;
 }
 
 export default ProtectedRoute;
