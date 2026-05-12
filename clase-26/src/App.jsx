@@ -12,12 +12,11 @@ import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { getProducts, deleteProduct } from "./services/ProductService";
 
-import { useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
+import { useAuth } from "./hooks/useAuth";
 
 function App() {
-  const { logout } = useContext(AuthContext);
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);

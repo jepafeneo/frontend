@@ -1,8 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { createProduct, updateProduct } from "../services/ProductService";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 const initialState = {
   name: "",
@@ -11,7 +10,7 @@ const initialState = {
 };
 
 function ProductForm({ products, loadProducts }) {
-  const { logout } = useContext(AuthContext);
+  const { logout } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
 

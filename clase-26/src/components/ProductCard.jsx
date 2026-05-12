@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 function ProductCard({ product, handleDelete }) {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
 
   return (
     <article className="product-card">
