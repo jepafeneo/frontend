@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
 
-export const authMiddleware = (req, res, next) => {
+export const authMiddleware = async (req, res, next) => {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
