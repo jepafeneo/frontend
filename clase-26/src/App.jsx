@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import "./App.css";
 import ProductList from "./components/ProductList";
@@ -10,73 +9,24 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { getProducts, deleteProduct } from "./services/ProductService";
 
 import Navbar from "./components/Navbar";
 import { useAuth } from "./hooks/useAuth";
+import { useProducts } from "./hooks/useProducts";
 
 function App() {
   const { logout } = useAuth();
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
 
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
-
-      const data = await getProducts();
-
-      setProducts(data);
-
-      setError(null);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    const confirmDelete = confirm(
-      "¿Esta seguro que quiere borrar el producto?",
-    );
-
-    if (!confirmDelete) return;
-
-    try {
-      await deleteProduct(id);
-
-      // await loadProducts();
-      setProducts(products.filter((p) => p._id != id));
-
-      setSuccess("Producto eliminado correctamente");
-    } catch (error) {
-      if (error.status == 401) {
-        logout();
-
-        navigate("/login");
-
-        return;
-      }
-
-      setError(error.message);
-    }
-  };
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-  useEffect(() => {
-    if (success) {
-      setTimeout(() => {
-        setSuccess(null);
-      }, 2000);
-    }
-  }, [success]);
+  const {
+    products,
+    setError,
+    success,
+    loading,
+    error,
+    loadProducts,
+    handleDelete,
+  } = useProducts({ logout, navigate });
 
   if (loading) {
     return <p className="message">Cargando productos...</p>;
