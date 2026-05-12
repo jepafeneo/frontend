@@ -1,4 +1,4 @@
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
@@ -9,15 +9,11 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import Navbar from "./components/Navbar";
-import { useAuth } from "./hooks/useAuth";
+
 import { useProducts } from "./hooks/useProducts";
 
 function App() {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-
   const {
     products,
     setError,
@@ -26,7 +22,7 @@ function App() {
     error,
     loadProducts,
     handleDelete,
-  } = useProducts({ logout, navigate });
+  } = useProducts();
 
   if (loading) {
     return <p className="message">Cargando productos...</p>;

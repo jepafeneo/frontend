@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { deleteProduct, getProducts } from "../services/ProductService";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./useAuth";
 
-export const useProducts = ({ logout, navigate }) => {
+export const useProducts = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
