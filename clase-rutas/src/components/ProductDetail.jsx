@@ -1,8 +1,26 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useProducts } from "../hooks/useProducts";
 
-function ProductDetail({ products }) {
+function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const { products, setError, loading, error } = useProducts();
+
+  if (loading) {
+    return <p className="message">Cargando productos...</p>;
+  }
+
+  if (error) {
+    return (
+      <div>
+        <p className="error">{error}</p>
+        <button type="button" onClick={() => setError(null)}>
+          Recargar
+        </button>
+      </div>
+    );
+  }
 
   const product = products.find((p) => p._id === id);
 

@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { createProduct, updateProduct } from "../services/ProductService";
 import { useAuth } from "../hooks/useAuth";
+import { useProducts } from "../hooks/useProducts";
 
 const initialState = {
   name: "",
@@ -9,10 +10,18 @@ const initialState = {
   stock: "",
 };
 
-function ProductForm({ products, loadProducts }) {
+function ProductForm() {
   const { logout } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const {
+    products,
+    setError: setErrorHook,
+    loading,
+    error: errorHook,
+    loadProducts,
+  } = useProducts();
 
   const isEdit = Boolean(id);
 
@@ -123,6 +132,21 @@ function ProductForm({ products, loadProducts }) {
   };
 
   const isDisabled = !form.name || !form.price || !form.stock || saving;
+
+  if (loading) {
+    return <p className="message">Cargando productos...</p>;
+  }
+
+  if (errorHook) {
+    return (
+      <div>
+        <p className="error">{errorHook}</p>
+        <button type="button" onClick={() => setErrorHook(null)}>
+          Recargar
+        </button>
+      </div>
+    );
+  }
 
   return (
     <section>
