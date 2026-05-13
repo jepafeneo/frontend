@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import { requiredAuth } from "./loaders/requiredAuth";
 
 import Layout from "./components/layout";
 
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
+
         element: <Home />,
       },
       {
@@ -30,14 +32,17 @@ export const router = createBrowserRouter([
       },
       {
         path: "/profile",
+        loader: requiredAuth,
         element: <Profile />,
       },
       {
         path: "/products/new",
+        loader: requiredAuth,
         element: <ProductForm />,
       },
       {
         path: "/products/:id/edit",
+        loader: requiredAuth,
         element: <ProductForm />,
       },
       {
