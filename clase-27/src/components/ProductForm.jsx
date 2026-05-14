@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { createProduct, updateProduct } from "../services/ProductService";
 import { useAuth } from "../hooks/useAuth";
-import { useProducts } from "../hooks/useProducts";
+import { useProduct } from "../hooks/useProduct";
 
 const initialState = {
   name: "",
@@ -15,35 +15,51 @@ function ProductForm() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const isEdit = Boolean(id);
+
   const {
-    products,
-    setError: setErrorHook,
+    product,
     loading,
     error: errorHook,
-    loadProducts,
-  } = useProducts();
-
-  const isEdit = Boolean(id);
+    setError: setErrorHook,
+  } = useProduct(id);
 
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (isEdit) {
-      const product = products.find((p) => p._id == id);
-
-      if (product) {
-        setForm({
-          name: product.name,
-          price: product.price,
-          stock: product.stock,
-        });
-      }
+    if (isEdit && product) {
+      setForm({
+        name: product.name,
+        price: product.price,
+        stock: product.stock,
+      });
     } else {
       setForm(initialState);
     }
-  }, [id, isEdit, products]);
+  }, [id, isEdit, product]);
+
+  // useEffect(() => {
+  //   if (isEdit) {
+  //     const {
+  //       product,
+  //       loading,
+  //       error: errorHook,
+  //       setError: setErrorHook,
+  //     } = useProduct(id);
+
+  //     if (product) {
+  //       setForm({
+  //         name: product.name,
+  //         price: product.price,
+  //         stock: product.stock,
+  //       });
+  //     }
+  //   } else {
+  //     setForm(initialState);
+  //   }
+  // }, [id, isEdit]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -113,7 +129,7 @@ function ProductForm() {
         await createProduct(productData);
       }
 
-      await loadProducts();
+      // await loadProducts();
       setForm(initialState);
       navigate("/");
     } catch (error) {
@@ -137,7 +153,7 @@ function ProductForm() {
     return <p className="message">Cargando productos...</p>;
   }
 
-  if (errorHook) {
+  if (isEdit && errorHook) {
     return (
       <div>
         <p className="error">{errorHook}</p>

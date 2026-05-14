@@ -1,14 +1,14 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useProducts } from "../hooks/useProducts";
+import { useProduct } from "../hooks/useProduct";
 
 function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { products, setError, loading, error } = useProducts();
+  const { product, loading, error, setError } = useProduct(id);
 
   if (loading) {
-    return <p className="message">Cargando productos...</p>;
+    return <p className="message">Cargando producto...</p>;
   }
 
   if (error) {
@@ -21,8 +21,6 @@ function ProductDetail() {
       </div>
     );
   }
-
-  const product = products.find((p) => p._id === id);
 
   if (!product) {
     return (

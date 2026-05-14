@@ -16,6 +16,22 @@ export const getProducts = async () => {
   return data;
 };
 
+export const getProductById = async (id) => {
+  const response = await fetch(`${URL_API}/${id}`);
+
+  if (response.status == 404) {
+    return null;
+  }
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Error al obtener el producto");
+  }
+
+  return data;
+};
+
 export const deleteProduct = async (id) => {
   const token = getToken();
 
