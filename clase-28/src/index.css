@@ -30,27 +30,6 @@ h2 {
   margin-top: 20px;
 }
 
-.product-card {
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  transition: transform 0.1s ease;
-}
-
-.product-card:hover {
-  transform: scale(1.02);
-}
-
-.product-card h3 {
-  margin-top: 0;
-  margin-bottom: 8px;
-}
-
-.product-card p {
-  margin: 4px 0;
-}
-
 button,
 .button {
   font-size: 14px;
@@ -194,22 +173,6 @@ button:hover,
 button:disabled {
   background-color: #999;
   cursor: not-allowed;
-}
-
-.card-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.card-actions a {
-  text-decoration: none;
-  /* color: #333;
-  font-weight: bold; */
-}
-
-.card-actions a:hover {
-  /* text-decoration: underline; */
 }
 
 .success {
