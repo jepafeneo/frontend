@@ -1,5 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useProduct } from "../hooks/useProduct";
+import Loading from "./ui/Loading";
 
 function ProductDetail() {
   const { id } = useParams();
@@ -8,18 +9,11 @@ function ProductDetail() {
   const { product, loading, error, setError } = useProduct(id);
 
   if (loading) {
-    return <p className="message">Cargando producto...</p>;
+    return <Loading text="Cargando producto..." />;
   }
 
   if (error) {
-    return (
-      <div>
-        <p className="error">{error}</p>
-        <button type="button" onClick={() => setError(null)}>
-          Recargar
-        </button>
-      </div>
-    );
+    return <ErrorMessage error={error} />;
   }
 
   if (!product) {

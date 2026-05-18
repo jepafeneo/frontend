@@ -11,7 +11,7 @@ function ProductCard({ product, handleDelete }) {
       <p className={styles.price}>$ {product.price}</p>
 
       <div className={styles.actions}>
-        <Link to={"/products/" + product._id} className="button">
+        <Link to={"/products/" + product._id} className="button secondary">
           Detalle
         </Link>
 
@@ -20,7 +20,13 @@ function ProductCard({ product, handleDelete }) {
             <Link to={`/products/${product._id}/edit`} className="button">
               Editar
             </Link>
-            <button onClick={() => handleDelete(product._id)}>Eliminar</button>
+            <button
+              type="button"
+              className="danger"
+              onClick={() => handleDelete(product._id)}
+            >
+              Eliminar
+            </button>
           </>
         )}
       </div>

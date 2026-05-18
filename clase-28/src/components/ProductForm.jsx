@@ -6,6 +6,7 @@ import {
   getProductById,
 } from "../services/ProductService";
 import { useAuth } from "../hooks/useAuth";
+import Loading from "./ui/Loading";
 
 const initialState = {
   name: "",
@@ -140,18 +141,11 @@ function ProductForm() {
   const isDisabled = !form.name || !form.price || !form.stock || saving;
 
   if (loading) {
-    return <p className="message">Cargando el producto...</p>;
+    return <Loading text="Cargando el producto..." />;
   }
 
   if (error) {
-    return (
-      <div>
-        <p className="error">{error}</p>
-        <button type="button" onClick={() => setError(null)}>
-          Recargar
-        </button>
-      </div>
-    );
+    return <ErrorMessage error={error} />;
   }
 
   return (
