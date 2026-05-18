@@ -1,8 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { createProduct, updateProduct } from "../services/ProductService";
+import {
+  createProduct,
+  updateProduct,
+  getProductById,
+} from "../services/ProductService";
 import { useAuth } from "../hooks/useAuth";
-import { useProduct } from "../hooks/useProduct";
 
 const initialState = {
   name: "",
@@ -17,49 +20,36 @@ function ProductForm() {
 
   const isEdit = Boolean(id);
 
-  const {
-    product,
-    loading,
-    error: errorHook,
-    setError: setErrorHook,
-  } = useProduct(id);
-
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (isEdit && product) {
-      setForm({
-        name: product.name,
-        price: product.price,
-        stock: product.stock,
-      });
-    } else {
-      setForm(initialState);
+    if (!isEdit) {
+      return;
     }
-  }, [id, isEdit, product]);
 
-  // useEffect(() => {
-  //   if (isEdit) {
-  //     const {
-  //       product,
-  //       loading,
-  //       error: errorHook,
-  //       setError: setErrorHook,
-  //     } = useProduct(id);
+    const loadProduct = async () => {
+      try {
+        setLoading(true);
 
-  //     if (product) {
-  //       setForm({
-  //         name: product.name,
-  //         price: product.price,
-  //         stock: product.stock,
-  //       });
-  //     }
-  //   } else {
-  //     setForm(initialState);
-  //   }
-  // }, [id, isEdit]);
+        const data = await getProductById(id);
+
+        setForm({
+          name: data.name,
+          price: data.price,
+          stock: data.stock,
+        });
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProduct();
+  }, [id, isEdit]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -150,14 +140,14 @@ function ProductForm() {
   const isDisabled = !form.name || !form.price || !form.stock || saving;
 
   if (loading) {
-    return <p className="message">Cargando productos...</p>;
+    return <p className="message">Cargando el producto...</p>;
   }
 
-  if (isEdit && errorHook) {
+  if (error) {
     return (
       <div>
-        <p className="error">{errorHook}</p>
-        <button type="button" onClick={() => setErrorHook(null)}>
+        <p className="error">{error}</p>
+        <button type="button" onClick={() => setError(null)}>
           Recargar
         </button>
       </div>
