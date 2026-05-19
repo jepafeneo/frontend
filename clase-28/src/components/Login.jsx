@@ -13,7 +13,7 @@ const initialState = {
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function Login() {
-  const { user, login, authLoading } = useAuth();
+  const { user, login, logout, authLoading } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState(initialState);
   const [error, setError] = useState(null);
@@ -91,8 +91,12 @@ function Login() {
   }, [success]);
 
   useEffect(() => {
-    if (user) {
+    const token = localStorage.getItem("token");
+
+    if (user && token) {
       navigate("/");
+    } else {
+      logout();
     }
   }, [authLoading]);
 
