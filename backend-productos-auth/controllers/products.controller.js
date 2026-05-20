@@ -13,6 +13,8 @@ export const getProducts = async (req, res) => {
 
 export const getProductById = async (req, res) => {
   try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     const { id } = req.params;
 
     const product = await Product.findById(id);

@@ -13,12 +13,12 @@ export const register = async (req, res) => {
   try {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
     const normalizedEmail = email?.trim().toLowerCase();
 
-    if (!name || !normalizedEmail || !password) {
+    if (!normalizedEmail || !password) {
       return res.status(400).json({
-        error: "Name, email and password required",
+        error: "Email and password required",
       });
     }
 
@@ -27,12 +27,6 @@ export const register = async (req, res) => {
     if (!emailRegex.test(normalizedEmail)) {
       return res.status(400).json({
         error: "Invalid email",
-      });
-    }
-
-    if (name.trim().length < 2) {
-      return res.status(400).json({
-        error: "Name too short",
       });
     }
 
@@ -53,14 +47,12 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-      name,
       email: normalizedEmail,
       password: hashedPassword,
     });
 
     res.status(201).json({
       id: user._id,
-      name: user.name,
       email: user.email,
     });
   } catch (error) {
@@ -115,7 +107,6 @@ export const login = async (req, res) => {
       token,
       user: {
         id: user._id,
-        name: user.name,
         email: user.email,
       },
     });
